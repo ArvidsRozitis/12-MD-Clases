@@ -1,3 +1,29 @@
 body {
   background-color: antiquewhite;
 }
+
+.img-carousel {
+  background-color: rgb(55, 55, 83);  
+}
+.img-carousel__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.button-img__change {
+  width: 30px;
+  height: 60px;
+  &:hover {
+    box-shadow: 1px 1px 5px 1px white;
+  }
+}
+
+.main-image__container {
+  
+}
+.main-image {
+  border-radius: 10px;
+}
