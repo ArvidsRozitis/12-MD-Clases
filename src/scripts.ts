@@ -137,7 +137,7 @@ class ImageCarouselExtendedExtended extends ImageCarouselExtended {
         })
     }
     prewLittleImgActive(){
-        
+        this.littleImages = this.littleImageContainer.querySelectorAll('.little__img')        
         this.prewImageButton.addEventListener('click', () => {
             this.littleImages.forEach((image) => {
                 image.classList.remove('little__img--active')
@@ -146,6 +146,7 @@ class ImageCarouselExtendedExtended extends ImageCarouselExtended {
         });
     }
     nextLittleImgActive(){
+        this.littleImages = this.littleImageContainer.querySelectorAll('.little__img')
         this.nextImageButton.addEventListener('click', () => {
             this.littleImages.forEach((image) => {
                 image.classList.remove('little__img--active')
