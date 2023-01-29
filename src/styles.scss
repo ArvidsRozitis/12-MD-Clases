@@ -4,6 +4,7 @@ body {
 
 .img-carousel {
   background-color: rgb(55, 55, 83);  
+  
 }
 .img-carousel__container {
   display: flex;
@@ -26,4 +27,37 @@ body {
 }
 .main-image {
   border-radius: 10px;
+}
+.carousel__dot-conatiner {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: grey;
+  &--active {
+    background-color: greenyellow;
+  }
+}
+.carousel__little-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.little__img {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  transform: scale 0.3s;
+  &--active {
+    scale: 1.25;
+  }
 }
