@@ -1,4 +1,4 @@
-
+//Abstrakcijas jātaisa ja paspēšu
 
 console.log('Ready for coding');
 //------------mainīgie
@@ -81,15 +81,62 @@ class ImageCarouselExtended extends ImageCarouselBase {
     }
 }
 //------------rasējums2
+
+//------------rasējums3
 class ImageCarouselExtendedExtended extends ImageCarouselExtended {
+    littleImageContainer: HTMLDivElement
     constructor(selector: string, images: string[]) {
         super(selector, images);
+        this.littleImageContainer = this.rootElemment.querySelector('.js-little-img-container');
+        
+
+        images.forEach((image, i) => {
+            const littleImage = document.createElement('img');
+            littleImage.classList.add('little__img');
+            littleImage.src = image
+            if(i === 0) {
+                littleImage.classList.add('little__img--active')
+            }
+            this.littleImageContainer.appendChild(littleImage);            
+        })
+
+        const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
+        this.prewImageButton.addEventListener('click', () => {
+            littleImages.forEach((image) => {
+                image.classList.remove('little__img--active')
+            })
+            littleImages[this.currentImageIndex].classList.add('little__img--active')
+        });
+
+        this.nextImageButton.addEventListener('click', () => {
+            const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
+            littleImages.forEach((image) => {
+                image.classList.remove('little__img--active')
+            })
+            littleImages[this.currentImageIndex].classList.add('little__img--active')
+        });
+
+        littleImages.forEach((image) => {
+            image.addEventListener('click', (e) => {
+                console.log(image)
+                const letKnowIndex = [...littleImages]
+                this.mainImage.src = image.getAttribute('src')
+                this.currentImageIndex = letKnowIndex.indexOf(image)
+                const dots = this.dotContainer.querySelectorAll('.carousel__dot')
+                dots.forEach((dot) => {
+                    dot.classList.remove('carousel__dot--active')
+                })
+                dots[this.currentImageIndex].classList.add('carousel__dot--active')
+
+                console.log(letKnowIndex.indexOf(image))
+                littleImages.forEach((image) => {
+                    image.classList.remove('little__img--active')
+                })
+                littleImages[this.currentImageIndex].classList.add('little__img--active')
+            })
+        })
     }
-
 }
-//------------rasējums3
-
-
 //------------rasējums3
 
 //------------izsaukums
