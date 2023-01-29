@@ -2,7 +2,15 @@
 
 console.log('Ready for coding');
 //------------mainīgie
-const images = ['https://picsum.photos/id/237/200/300', 'https://picsum.photos/id/200/200/300', 'https://picsum.photos/id/250/200/300']
+const images = [
+    'https://picsum.photos/id/237/200/300',
+    'https://picsum.photos/id/200/200/300',
+    'https://picsum.photos/id/250/200/300',
+    'https://picsum.photos/id/242/200/300',
+    'https://picsum.photos/id/235/200/300',
+    'https://picsum.photos/id/228/200/300',
+    'https://picsum.photos/id/225/200/300'
+]
 //------------mainīgie
 
 //------------rasējums1
@@ -139,10 +147,42 @@ class ImageCarouselExtendedExtended extends ImageCarouselExtended {
 }
 //------------rasējums3
 
+//------------rasējums4
+class ImageCarouselExtendedExtendedExtended extends ImageCarouselExtendedExtended {
+    constructor(selector: string, images: string[]) {
+        super(selector, images);
+
+        setInterval(() => {
+            if(images.length-1 === this.currentImageIndex) {
+                this.currentImageIndex = 0
+            } else {
+                this.currentImageIndex+=1
+            }
+            this.mainImage.src = this.images[this.currentImageIndex]
+            const dots = this.dotContainer.querySelectorAll('.carousel__dot')
+            dots.forEach((dot) => {
+                dot.classList.remove('carousel__dot--active')
+            })
+            dots[this.currentImageIndex].classList.add('carousel__dot--active')
+            console.log(this.currentImageIndex)
+            const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
+            littleImages.forEach((image) => {
+                image.classList.remove('little__img--active')
+            })
+            littleImages[this.currentImageIndex].classList.add('little__img--active')
+
+
+        },3000)
+    }
+}
+//------------rasējums4
+
+
 //------------izsaukums
 const carousel = new ImageCarouselBase('.js-image-carousel', images);
 const carouselExtended = new ImageCarouselExtended('.js-image-carousel-extended', images);
 const carouselExtendedExtended = new ImageCarouselExtendedExtended('.js-image-carousel-extended-extended', images);
+const carouselExtendedExtendedExtended = new ImageCarouselExtendedExtendedExtended('.js-image-carousel-extended-extended-extended', images);
 console.log(carousel.images)
 //------------izsaukums
 
