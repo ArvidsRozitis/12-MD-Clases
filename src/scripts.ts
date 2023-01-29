@@ -29,8 +29,12 @@ class ImageCarouselBase {
         this.nextImageButton = this.rootElemment.querySelector('.js-next-image')
         this.images = images
         this.currentImageIndex = 0
-        
-        
+
+        this.handlePrew()
+        this.handleNext()
+    }
+
+    handlePrew() {
         this.mainImage.src = this.images[this.currentImageIndex]
         this.prewImageButton.addEventListener('click', () => {
             if (this.currentImageIndex === 0){
@@ -42,6 +46,9 @@ class ImageCarouselBase {
             }
             console.log(this.currentImageIndex)
         })
+    }
+
+    handleNext() {
         this.nextImageButton.addEventListener('click', () => {
             if (this.currentImageIndex === this.images.length-1){
                 this.currentImageIndex = 0
@@ -59,11 +66,17 @@ class ImageCarouselBase {
 //------------rasējums2
 class ImageCarouselExtended extends ImageCarouselBase {
     dotContainer: HTMLDivElement
+    dot: HTMLDivElement
     constructor(selector: string, images: string[]) {
         super(selector, images);
 
         this.dotContainer = this.rootElemment.querySelector('.js-dot-container')
-        
+        this.dot = document.createElement('div')
+        this.drawAllDots()
+        this.colorPrewDot()
+        this.colorNextDot()
+    }
+    drawAllDots(){
         images.forEach((image, i) => {
             const dot = document.createElement('div')
             dot.classList.add('carousel__dot')
@@ -72,20 +85,26 @@ class ImageCarouselExtended extends ImageCarouselBase {
             }
             this.dotContainer.appendChild(dot)
         })
+    }
+    colorPrewDot(){
         this.prewImageButton.addEventListener('click', () => {
             const dots = this.dotContainer.querySelectorAll('.carousel__dot')
-            dots.forEach((dot) => {
-                dot.classList.remove('carousel__dot--active')
-            })
+            this.handleDotClases()
             dots[this.currentImageIndex].classList.add('carousel__dot--active')
         });
+
+    }
+    colorNextDot(){
         this.nextImageButton.addEventListener('click', () => {
-            const dots = this.dotContainer.querySelectorAll('.carousel__dot')
-            dots.forEach((dot) => {
-                dot.classList.remove('carousel__dot--active')
-            })
-            dots[this.currentImageIndex].classList.add('carousel__dot--active')
+            this.handleDotClases()
         });
+    }
+    handleDotClases(){
+        const dots = this.dotContainer.querySelectorAll('.carousel__dot')
+        dots.forEach((dot) => {
+            dot.classList.remove('carousel__dot--active')
+        })
+        dots[this.currentImageIndex].classList.add('carousel__dot--active')
     }
 }
 //------------rasējums2
@@ -93,37 +112,49 @@ class ImageCarouselExtended extends ImageCarouselBase {
 //------------rasējums3
 class ImageCarouselExtendedExtended extends ImageCarouselExtended {
     littleImageContainer: HTMLDivElement
+    littleImage: HTMLImageElement
+    littleImages: NodeListOf<Element>
     constructor(selector: string, images: string[]) {
         super(selector, images);
         this.littleImageContainer = this.rootElemment.querySelector('.js-little-img-container');
+        this.littleImage = document.createElement('img');
+        this.littleImages =this.littleImageContainer.querySelectorAll('.little__img')
         
-
+        this.addLittleImages()
+        this.prewLittleImgActive()
+        this.nextLittleImgActive()
+        this.handleClickOnLittleImage()        
+    }
+    addLittleImages(){
         images.forEach((image, i) => {
-            const littleImage = document.createElement('img');
-            littleImage.classList.add('little__img');
-            littleImage.src = image
+            this.littleImage = document.createElement('img');
+            this.littleImage.classList.add('little__img');
+            this.littleImage.src = image
             if(i === 0) {
-                littleImage.classList.add('little__img--active')
+                this.littleImage.classList.add('little__img--active')
             }
-            this.littleImageContainer.appendChild(littleImage);            
+            this.littleImageContainer.appendChild(this.littleImage);            
         })
-
-        const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
+    }
+    prewLittleImgActive(){
+        
         this.prewImageButton.addEventListener('click', () => {
-            littleImages.forEach((image) => {
+            this.littleImages.forEach((image) => {
                 image.classList.remove('little__img--active')
             })
-            littleImages[this.currentImageIndex].classList.add('little__img--active')
+            this.littleImages[this.currentImageIndex].classList.add('little__img--active')
         });
-
+    }
+    nextLittleImgActive(){
         this.nextImageButton.addEventListener('click', () => {
-            const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
-            littleImages.forEach((image) => {
+            this.littleImages.forEach((image) => {
                 image.classList.remove('little__img--active')
             })
-            littleImages[this.currentImageIndex].classList.add('little__img--active')
+            this.littleImages[this.currentImageIndex].classList.add('little__img--active')
         });
-
+    }
+    handleClickOnLittleImage() {
+        const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
         littleImages.forEach((image) => {
             image.addEventListener('click', (e) => {
                 console.log(image)
@@ -149,30 +180,86 @@ class ImageCarouselExtendedExtended extends ImageCarouselExtended {
 
 //------------rasējums4
 class ImageCarouselExtendedExtendedExtended extends ImageCarouselExtendedExtended {
+    isPaused: boolean
+    littleImages: NodeListOf<Element>
+    modal: HTMLDivElement
+    modalImage: HTMLImageElement
+
     constructor(selector: string, images: string[]) {
         super(selector, images);
 
+        this.modal = this.rootElemment.querySelector('.js-modal');
+        this.modalImage = this.rootElemment.querySelector('.js-modal-image');
+        this.isPaused = false
+        this.littleImages = this.littleImageContainer.querySelectorAll('.little__img')
         setInterval(() => {
-            if(images.length-1 === this.currentImageIndex) {
-                this.currentImageIndex = 0
-            } else {
-                this.currentImageIndex+=1
-            }
-            this.mainImage.src = this.images[this.currentImageIndex]
-            const dots = this.dotContainer.querySelectorAll('.carousel__dot')
-            dots.forEach((dot) => {
-                dot.classList.remove('carousel__dot--active')
-            })
-            dots[this.currentImageIndex].classList.add('carousel__dot--active')
-            console.log(this.currentImageIndex)
-            const littleImages = this.littleImageContainer.querySelectorAll('.little__img')
-            littleImages.forEach((image) => {
-                image.classList.remove('little__img--active')
-            })
-            littleImages[this.currentImageIndex].classList.add('little__img--active')
+            if(!this.isPaused) {
+                if(images.length-1 === this.currentImageIndex) {
+                    this.currentImageIndex = 0
+                } else {
+                    this.currentImageIndex+=1
+                }
+                this.mainImage.src = this.images[this.currentImageIndex]
+                const dots = this.dotContainer.querySelectorAll('.carousel__dot')
+                dots.forEach((dot) => {
+                    dot.classList.remove('carousel__dot--active')
+                })
+                dots[this.currentImageIndex].classList.add('carousel__dot--active')
+                this.littleImages.forEach((image) => {
+                    image.classList.remove('little__img--active')
+                })
+                this.littleImages[this.currentImageIndex].classList.add('little__img--active')
 
+                this.mainImage.addEventListener('click', () => {
+                    this.isPaused = true;
+                    console.log('images on pause')
+                    this.modal.classList.add('modal--visable');
+                    this.modalImage.src = this.images[this.currentImageIndex]                     
+                })
 
-        },3000)
+                const closeModalMark: HTMLSpanElement = this.rootElemment.querySelector('.js-close-modal'); 
+                closeModalMark.addEventListener('click', () =>{ 
+                    this.modal.classList.remove('modal--visable');
+                    this.isPaused = false;
+                })
+
+                this.pauseOnLittleImageClick()
+                this.pauseOnPreviousImageButton()
+                this.pauseOnNextImageButton()                
+            }        
+        }, 2000)
+    }
+    pauseOnPreviousImageButton() {
+        this.prewImageButton.addEventListener('click', () => {
+            this.isPaused = true;
+            console.log('images on pause')
+            setTimeout(() => {
+                this.isPaused = false;
+                console.log('enough back to work');                                                
+            }, 3000);  
+        })
+    }
+    pauseOnNextImageButton() {
+        this.nextImageButton.addEventListener('click', () => {
+            this.isPaused = true;
+            console.log('images on pause')
+            setTimeout(() => {
+                this.isPaused = false;
+                console.log('enough back to work');                                                
+            }, 3000);   
+        })
+    }
+    pauseOnLittleImageClick() {
+        this.littleImages.forEach((image) => {
+            image.addEventListener('click', () => {
+                this.isPaused = true;
+                console.log('images on pause')
+                setTimeout(() => {
+                    this.isPaused = false;
+                    console.log('enough back to work');                                                
+                }, 2000);      
+            })
+        })
     }
 }
 //------------rasējums4
